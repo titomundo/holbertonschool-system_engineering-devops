@@ -1,0 +1,53 @@
+https://imgur.com/a/wnW8wwk
+
+
+You must add:
+
+    1 load-balancer (HAproxy)
+    2 servers (each containing the following)
+        1 web server (Nginx)
+        1 application server
+        1 set of application files (your code base)
+        1 database (MySQL)
+
+
+You must be able to explain some specifics about this infrastructure:
+
+For every additional element, why you are adding it
+ - Two new servers to remove a SPOF, make maintenance easier and increase availability
+ - HA Proxy to enable Round Robin Balancing between all three servers
+
+What distribution algorithm your load balancer is configured with and how it works
+ - For the sake of the task we will use Round Robin balancing. 
+ - This means requests will be assigned one to each server in order, first to last and then first again.
+ - With this distribution all servers have an equal amount of requests. 
+ - However, this does not balance around the weight of the requests but rather to the number of them.
+
+Is your load-balancer enabling an Active-Active or Active-Passive setup, explain the difference between both.
+ - The load-balancer uses an active-active setup to ensure we can benefit from performance of the three servers.
+ - This means we have all servers active at all times and we just distribute workload between them.
+ - In a active-pasive setup we will have only one or two servers actives and use the remaining in case.
+
+How a database Primary-Replica (Master-Slave) cluster works
+ - This schema works by having a primary database to write into and work as "main branch".
+ - Secundary(slave) nodes will just copy from the main node and only allow reads.
+
+What is the difference between the Primary node and the Replica node in regard to the application
+ - Replica nodes are only for backup or database reads.
+ - New entries can only be inserted into the main node(s).
+
+
+You must be able to explain what the issues are with this infrastructure:
+
+Where are SPOF
+ - We no longer have a single main server as a SPOF and with two more servers we can have redundancy.
+ - However, now our infrastructure depends on a singular(1) load-balancer, so our application will fail if it goes down.
+
+Security issues (no firewall, no HTTPS)
+ - We have no HTTPS meaning no encryption to our request so we are vulnerable to man in the middle attacks.
+ - We cannot block certain requests or IPs since we have no firewall.
+
+No monitoring
+ - We have no insight of how our server is doing internally.
+ - We don't know hardware usage or any internal configuration errors.
+ - We have to manually check if our application is running or if any erros occurred.
