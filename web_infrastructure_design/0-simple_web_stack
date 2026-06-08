@@ -1,1 +1,50 @@
 https://imgur.com/a/XmimXUo
+
+You must use:
+    1 domain name foobar.com configured with a www record that points to your server IP 8.8.8.8
+	1 server (containing the following)
+	1 web server (Nginx)
+	1 application server
+	1 application files (your code base)
+	1 database (MySQL)
+
+You must be able to explain some specifics about this infrastructure:
+
+What is a server
+ - A server is a device (physical or virtual) that listens to requests of other 
+   devices (clients) to return some kind of response or functionality
+
+What is the role of the domain name
+ - The domain name is there to provide a human-readable address to users so they don't have to memorize an IP.
+
+What type of DNS record www is in www.foobar.com
+ - A CNAME record that points to another domain name.
+
+What is the role of the web server
+ - Listen to HTTP and HTTPS requests, and redirect accordingly to other internal servers.
+ - It is usually used to return static content like pre-rendered HTML from the backend.
+
+What is the role of the application server
+ - It is the main business logic of the application and does all the information processing.
+
+What is the role of the database
+ - Store persisting data that remains through server restarts and sessions.
+
+What is the server using to communicate with the computer of the user requesting the website
+ - The client's request travels through the TCP/IP protocol, where it first the URL "www.foobar.com" is translated by
+   a DNS server to get the actual IP address of the servers.
+ - The request most likely will be using the HTTP or HTTPS protocol.
+
+
+You must be able to explain what the issues are with this infrastructure:
+
+SPOF
+ - Since all our infrastructure sits inside one server, if this server ever goes down clients won't be able to access it.
+
+Downtime when maintenance needed (like deploying new code web server needs to be restarted)
+ - The application can't be accessed during maintenance because there is no redundancy.
+ - This may have less effect on scheduled maintenance but will be very problematic in unexpected failures.
+
+Cannot scale if too much incoming traffic
+ - There is no room to scale other than adding virtual application servers and use the NGINX web server as a load-balancer.
+ - This may hinder the server's performance.
