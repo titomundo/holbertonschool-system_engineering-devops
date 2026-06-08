@@ -1,0 +1,34 @@
+https://imgur.com/a/DkHaV53
+
+
+You must add:
+
+    1 server
+    1 load-balancer (HAproxy) configured as cluster with the other one
+	Split components (web server, application server, database) with their own server
+
+You must be able to explain some specifics about this infrastructure:
+
+For every additional element, why you are adding it
+ - Extra server, by this we mean a "complete" package of a web server, application server and database
+ - Separate each server into a singular node, we now have 3 web servers, 3 application servers and 3 databases servers.
+ - Extra load balancer, we updated our load balancer to a cluster so we it is no longer a SPOF.
+ 
+This architecture distributes the workload of each part of the networking into a separate module.
+
+Benefits:
+ - Separation of concerns.
+ - Redundancy.
+ - High availability.
+ - Deployment without server downtime.
+ - Reduced SPOF.
+ - Higher performance.
+ - Easier to scale.
+
+Downsides:
+ - More servers = more likely to suffer a hardware failure.
+ - Having to sync codebases between servers.
+ - Higher latency due to requests having to travel through multiple servers.
+ - More complexity.
+ - More expensive.
+ - We don't have End to End encryption on this particular example.
