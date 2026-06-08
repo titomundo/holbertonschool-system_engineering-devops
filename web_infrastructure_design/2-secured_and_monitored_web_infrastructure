@@ -1,0 +1,56 @@
+https://imgur.com/a/dGKkFpQ
+
+
+You must add:
+
+    3 firewalls
+    1 SSL certificate to serve www.foobar.com over HTTPS
+    3 monitoring clients (data collector for Sumologic or other monitoring services)
+
+
+You must be able to explain some specifics about this infrastructure:
+
+For every additional element, why you are adding it
+ - A firewall for each server, we need to be able to manage what connections are allowed to hit the servers.
+ - SSL certificates allows us to use HTTPS request and have a secure, encrypted connection with clients (plus SEO).
+ - Monitoring clients to be able to get insight into our infrastructure.
+
+What are firewalls for
+ - Protect the servers from unwanted requests.
+ - Isolate our internal servers from the internet so they only accept request that go through the load-balancer.
+
+Why is the traffic served over HTTPS
+ - Add encryption to requests.
+ - Search Engine Optimization.
+ - Have a secure connection with clients.
+
+What monitoring is used for
+ - We use one monitoring client to check and configure our firewall.
+ - One for data insight like logs, performance, graphs, etc.
+ - An uptime monitor so we can know if our app is running.
+
+How the monitoring tool is collecting data
+ - It uses many data points from the software and hardware of our servers to generate useful insight.
+ - One example of it may be CPU and RAM usage, available space, database overview, running processes, etc.
+
+Explain what to do if you want to monitor your web server QPS
+ - We can use our monitoring tools to record hoy many query per second our application is handling.
+ - We can also use NGINX at each server to know how many requests each server is receiving.
+
+
+You must be able to explain what the issues are with this infrastructure:
+
+Why terminating SSL at the load balancer level is an issue
+ - It compromises security as requests are decrypted reaching the load-balancer, meaning packages are vulnerable to 
+   being intercepted between internal servers.
+
+Why having only one MySQL server capable of accepting writes is an issue
+ - This means only heavy load all only one server is capable of writing to the database and become a bottleneck.
+ - Also this means the slave nodes have to constantly update to catch up.
+ - The main node may work as a SPOF.
+
+Why having servers with all the same components (database, web server and application server) might be a problem
+ - Security, if a server is hacked all other components within will be compromised as well.
+ - If a case where we would need to scale up, we would have to add an entire new server with all of its components.
+ Example:
+ - If we needed another database node, we would have to add a whole new complete server, instead of just a database server.
